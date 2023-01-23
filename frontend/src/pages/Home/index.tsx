@@ -54,7 +54,10 @@ export default function Home() {
       <div className="content">
         <div className="searchAndOrdination">
           <div className="search">
-            <input type="text" placeholder="Pesquisar um Filme" onChange={(e) => setSearch(e.target.value)} />
+            <form action="/search" method='get'>
+              <input type="text" placeholder="Pesquisar um Filme" onChange={(e) => setSearch(e.target.value)} />
+              <input type="submit" value="Buscar" />
+            </form>
           </div>
           <div className="ordination">
             <span>Ordernar por: </span>
