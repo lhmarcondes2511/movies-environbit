@@ -1,0 +1,33 @@
+
+.card {
+    max-height: 300px;
+    width: 250px;
+    margin: 1em 1em;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 1px 1px 5px rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255, 0.9);
+}
+
+.cardHeader img {
+    /* width: 100%;
+    transform: translate(0, -30%);
+    opacity: 0.7;
+    object-fit: cover;
+    height: 50vh; */
+    width: 16vw;
+    opacity: 0.7;
+    object-fit: cover;
+    height: 49vh;
+}
+
+.cardBody {
+    position: absolute;
+    top: 15em;
+    padding: .5em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    background-color: rgb(255, 255, 255, 0.9);
+}

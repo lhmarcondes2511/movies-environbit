@@ -1,0 +1,21 @@
+
+.containerNotFuund {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    min-height: 81.5vh;
+}
+
+.containerNotFuund h1 {
+    font-size: 50pt;
+}
+
+.containerNotFuund p {
+    font-size: 20pt;
+}
+
+.containerNotFuund span {
+    margin-top: 3em;
+    font-weight: bold;
+}

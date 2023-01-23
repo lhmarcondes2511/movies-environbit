@@ -1,0 +1,9 @@
+
+.input, 
+.input:focus {
+    font-size: large;
+    border: none;
+    border-bottom: 1px solid #b90303;
+    outline: 0;
+    margin-top: .5em
+}

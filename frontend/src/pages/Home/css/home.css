@@ -1,0 +1,87 @@
+
+.containerBody {
+    padding: 2em;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.titleText h2 {
+    font-size: 24pt
+}
+
+.titleText p {
+    font-size: 14pt;
+    margin-top: .5em;
+}
+
+.button {
+    margin-top: 1.5em;
+    margin-right: 3em;
+    display: flex;
+    justify-content: end;
+}
+
+.button a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #b90303;
+    color: #fff;
+    font-weight: bold;
+    padding: .3em 1em;
+}
+
+.content {
+    margin-top: 2em;
+}
+
+.searchAndOrdination {
+    display: flex;
+    flex-direction: column;
+}
+
+.search input[type='text'], 
+.search input[type='text']:focus {
+    width: 40%;
+    font-size: large;
+    border: none;
+    border-bottom: 1px solid #b90303;
+    outline: 0;
+}
+
+.ordination {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ordination span {
+    font-weight: bold;
+}
+
+.btnOrdination {
+    margin: 0 .5em;
+    border: 1px solid #b90303;
+    transition: .5s;
+    color: #000;
+}
+
+.btnOrdination:hover {
+    margin: 0 .5em;
+    background-color: #b90303;
+    color: #fff;
+    cursor: pointer;
+}
+
+.btnOrdination div {
+    padding: .3em;
+}
+
+.listFilms {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
