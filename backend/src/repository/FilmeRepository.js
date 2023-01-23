@@ -2,8 +2,8 @@ const Filme = require("../model/Filme")
 
 
 module.exports = class FilmeRepository {
-  static getAllFilmes() {
-    return Filme.find()
+  static getAllFilmes(name) {
+    return Filme.find({ nome: {$regex: name, $options: 'i'} })
   }
 
   static searchFilmes() {

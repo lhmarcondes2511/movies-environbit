@@ -6,15 +6,17 @@ module.exports = class FilmeController {
     try {
       const { name, order } = req.query
       let filmes = ''
+      
       if(order == 'anoLancamento'){
-        filmes = await FilmeRepository.getAllFilmes().sort({ anoLancamento: 1 })
+        filmes = await FilmeRepository.getAllFilmes(name).sort({ anoLancamento: 1 })
       }else if(order == 'nome'){
-        filmes = await FilmeRepository.getAllFilmes().sort({ nome: 1 })
+        filmes = await FilmeRepository.getAllFilmes(name).sort({ nome: 1 })
       }else if(order == 'pais'){
-        filmes = await FilmeRepository.getAllFilmes().sort({ pais: 1 })
+        filmes = await FilmeRepository.getAllFilmes(name).sort({ pais: 1 })
       }else {
-        filmes = await FilmeRepository.getAllFilmes().sort({ _id: 1 })
+        filmes = await FilmeRepository.getAllFilmes(name).sort({ _id: 1 })
       }
+
       return res.status(200).send({ data: filmes })
     } catch (error) {
       return res.status(400).send({ message: 'Erro ao listar os filmes' })
