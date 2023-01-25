@@ -1,13 +1,20 @@
 import './css/filme.css'
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import FilmeService from '../../service/filmeService';
+import { storage } from '../../firebaseConfig'
+import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { Link } from 'react-router-dom';
+import { FaSpinner } from 'react-icons/fa';
+import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 export default function EditFilme() {
+    const navigate = useNavigate()
+    let [imageUpload, setImageUpload] = useState<File | null>(null)
     const params = useParams()
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingEdit, setIsLoadingEdit] = useState(false);
     const [filme, setFilme] = useState<any>({})
 
     const [nome, setNome] = useState('')
@@ -15,10 +22,78 @@ export default function EditFilme() {
     const [diretor, setDiretor] = useState('')
     const [pais, setPais] = useState('')
     const [anoLancamento, setAnoLancamento] = useState('')
+    const [favorite, setFavorite] = useState('')
+    const [urlImg, setUrlImg] = useState('')
+    const [ImgView, setImgView] = useState(true)
+    const [urlImgFirebase, setUrlImgFirebase] = useState('')
 
+    async function handleUploadImage(e: FormEvent) {
+        setIsLoadingEdit(true)
+        e.preventDefault();
 
-    function handleEdit() {
+        if (urlImg === urlImgFirebase) {
+            handleEdit(urlImg)
+        } else if (imageUpload !== null) {
+            const imageRef = ref(storage, `images/${imageUpload.name}`)
+            uploadBytes(imageRef, imageUpload).then((snapshot) => {
+                getDownloadURL(snapshot.ref).then((url) => {
+                    handleEdit(url)
+                })
+            }).catch(err => {
+                return console.log(`Erro: ${err}`)
+            })
+        } else {
+            alert('Erro ao Editar')
+        }
+    }
 
+    async function handleEdit(urlImage: string) {
+
+        const formData = {
+            nome: nome || '',
+            descricao: descricao || '',
+            diretor: diretor || '',
+            pais: pais || '',
+            anoLancamento: anoLancamento || '',
+            img: urlImage || '',
+            favorite: favorite
+        }
+
+        const id = filme._id;
+
+        try {
+            const createFilme = await FilmeService.edit(id, formData)
+            if (createFilme) {
+                alert('Ediatdo')
+                setIsLoadingEdit(false)
+
+                setNome('')
+                setDescricao('')
+                setDiretor('')
+                setPais('')
+                setAnoLancamento('')
+                setImageUpload(null)
+
+                navigate('/')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    function handleCloseImg() {
+
+        const url = urlImgFirebase.split('%2F')[1].split('?alt')[0].replaceAll('%20', ' ')
+        const desertRef = ref(storage, `images/${url}`);
+
+        // Delete the file
+        deleteObject(desertRef).then(() => {
+            setUrlImg('')
+            setImgView(false)
+        }).catch((error) => {
+            console.log(`Erro: ${error}`)
+        });
     }
 
 
@@ -30,6 +105,16 @@ export default function EditFilme() {
 
             setFilme(filmesList)
 
+            setNome(filmesList.nome)
+            setDescricao(filmesList.descricao)
+            setDiretor(filmesList.diretor)
+            setPais(filmesList.pais)
+            setAnoLancamento(new Date(filmesList.anoLancamento).getFullYear().toString())
+            setUrlImg(filmesList.img)
+            setFavorite(filmesList.favorite)
+
+            setUrlImgFirebase(filmesList.img)
+
             setIsLoading(false)
         }
 
@@ -40,18 +125,31 @@ export default function EditFilme() {
         <>
             {!isLoading ? (
                 <div className='formEdit'>
+                    {isLoadingEdit && (
+                        <div className='loading'>
+                            <div className='loadingIcon'>
+                                <FaSpinner />
+                            </div>
+                            <div>
+                                <p>
+                                    Carregando
+                                </p>
+                            </div>
+                        </div>
+                    )}
                     <h1>Editar Filme</h1>
                     <hr style={{ display: 'flex', justifyContent: 'center', margin: '0 10em' }} />
                     {filme ? (
-                        <form className='form' onSubmit={handleEdit}>
+                        <form className='form' onSubmit={handleUploadImage}>
+                            <input type="hidden" name="id" value={filme._id} />
                             <div className='field'>
                                 <label htmlFor="title">Título: <span>*</span></label>
                                 <input
                                     type="text"
                                     name="nome"
                                     placeholder="Insira um título"
-                                    value={filme.nome}
                                     onChange={(e) => setNome(e.target.value)}
+                                    value={nome}
                                     required={true} />
                             </div>
                             <div className='field'>
@@ -59,8 +157,8 @@ export default function EditFilme() {
                                 <textarea
                                     name="description"
                                     placeholder="Descreva o seu filme"
-                                    value={filme.descricao}
                                     onChange={(e) => setDescricao(e.target.value)}
+                                    value={descricao}
                                     rows={5}
                                     required={false} />
                             </div>
@@ -70,8 +168,8 @@ export default function EditFilme() {
                                     type="text"
                                     name="diretor"
                                     placeholder="Nome do Diretor"
-                                    value={filme.diretor}
                                     onChange={(e) => setDiretor(e.target.value)}
+                                    value={diretor}
                                     required={true} />
                             </div>
                             <div className='field'>
@@ -80,8 +178,8 @@ export default function EditFilme() {
                                     type="text"
                                     name="pais"
                                     placeholder="País que foi criado"
-                                    value={filme.pais}
                                     onChange={(e) => setPais(e.target.value)}
+                                    value={pais}
                                     required={true} />
                             </div>
                             <div className='field'>
@@ -90,15 +188,19 @@ export default function EditFilme() {
                                     type="text"
                                     name="anoLancamento"
                                     placeholder="Ano de Lançamento (Ex: 1995)"
-                                    value={new Date(filme.anoLancamento).getFullYear()}
                                     onChange={(e) => setAnoLancamento(e.target.value)}
+                                    value={anoLancamento}
                                     required={true} />
                             </div>
-                            {filme.img ? (
+                            {ImgView ? (
                                 <div className='fieldImage'>
                                     <label htmlFor="img">Imagem: <span>*</span></label>
+                                    <p style={{ fontSize: '10pt', display: 'flex', marginBottom: '1em' }}>OBS: Ao clicar em remover a imagem, ela será removida permanente.</p>
                                     <div className='contentImage'>
-                                        <img src={filme.img} />
+                                        <img src={(!urlImg && imageUpload) ? URL.createObjectURL(imageUpload) : urlImg} />
+                                        <div className='actionCloseImg' onClick={handleCloseImg}>
+                                            <AiOutlineCloseCircle />
+                                        </div>
                                     </div>
                                 </div>
                             ) : (
@@ -109,11 +211,14 @@ export default function EditFilme() {
                                         name="img"
                                         placeholder="Imagem do Filme"
                                         accept='image/*'
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                            if (!e.target.files) return
+                                            setImageUpload(e.target.files[0])
+                                            setImgView(true)
+                                        }}
                                         required={true} />
                                 </div>
-                            )
-
-                            }
+                            )}
                             <div className='btnSubmit'>
                                 <button type="submit">Editar</button>
                             </div>

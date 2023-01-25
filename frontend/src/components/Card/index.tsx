@@ -34,7 +34,7 @@ export default function Card(props: CardModel) {
 
     async function getById(id: string){
       const card = await FilmeService.getById(id)
-
+      
       setStar(card.favorite)
     }
 
@@ -56,7 +56,6 @@ export default function Card(props: CardModel) {
               {star ? (
                 <FaStar
                   style={{
-                    // position: 'absolute',
                     padding: '0.3em',
                     fontSize: '18pt',
                     cursor: 'pointer',
@@ -68,7 +67,6 @@ export default function Card(props: CardModel) {
               ) : (
                 <FaRegStar
                   style={{
-                    // position: 'absolute',
                     padding: '0.3em',
                     fontSize: '18pt',
                     cursor: 'pointer',

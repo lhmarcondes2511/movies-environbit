@@ -1,6 +1,4 @@
 import api from "./api"
-import { storage } from '../firebaseConfig'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 type FormProps = {
   nome: string,
@@ -8,12 +6,28 @@ type FormProps = {
   diretor: string,
   pais: string,
   anoLancamento: string,
-  img: string
+  img: string,
+  favorite: string
 }
 
 class FilmeService {
   static async getAll() {
     const result = await api.get(`/filmes`)
+    return result.data.data
+  }
+
+  static async getAllFavorites() {
+    const result = await api.get(`/myfavorites`)
+    return result.data.data
+  }
+
+  static async SearchAndOrder(name: string, order: string) {
+    const result = await api.get(`/filmes/?name=${name}&order=${order}`)
+    return result.data.data
+  }
+
+  static async SearchAndOrderFavorites(name: string, order: string) {
+    const result = await api.get(`/myfavorites/?name=${name}&order=${order}`)
     return result.data.data
   }
 
@@ -24,13 +38,9 @@ class FilmeService {
       diretor: form.diretor,
       pais: form.pais,
       anoLancamento: form.anoLancamento,
-      img: form.img
+      img: form.img,
+      favorite: form.favorite
     })
-    return result.data.data
-  }
-
-  static async SearchAndOrder(name: string, order: string) {
-    const result = await api.get(`/filmes/?name=${name}&order=${order}`)
     return result.data.data
   }
 
@@ -47,6 +57,24 @@ class FilmeService {
 
   static async getById(id: string) {
     const result = await api.get(`/filmes/${id}`)
+    return result.data.data
+  }
+
+  static async edit(id: string, form: FormProps) {
+    const result = await api.patch(`/filmes/${id}`, {
+      nome: form.nome,
+      descricao: form.descricao,
+      diretor: form.diretor,
+      pais: form.pais,
+      anoLancamento: form.anoLancamento,
+      img: form.img,
+      favorite: form.favorite
+    })
+    return result.data.data
+  }
+
+  static async removeFilme(id: string) {
+    const result = await api.delete(`/filmes/${id}`)
     return result.data.data
   }
 }

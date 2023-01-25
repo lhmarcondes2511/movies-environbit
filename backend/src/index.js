@@ -2,9 +2,9 @@ const express = require('express')
 const connectDatabase = require('./db/conn')
 const app = express()
 const filmeRoute = require('./routes/FilmeRoute')
+const myfavoriteRoutes = require('./routes/MyFavorites')
 const env = require('dotenv')
 const cors = require('cors')
-const FilmeController = require('./controllers/FilmeController')
 
 env.config()
 
@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/filmes', filmeRoute)
+app.use('/myfavorites', myfavoriteRoutes) 
 
 connectDatabase()
 

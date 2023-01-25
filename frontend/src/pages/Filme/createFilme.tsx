@@ -1,13 +1,17 @@
 import './css/filme.css'
 import { ChangeEvent, FormEvent, useState } from 'react'
+import { FaSpinner } from 'react-icons/fa'
 import { storage } from '../../firebaseConfig'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import FilmeService from '../../service/filmeService';
 import { useNavigate } from 'react-router'
 
 export default function CreateFilme() {
+    const searchParams = new URLSearchParams(document.location.search)
+    let favorite = searchParams.get('favorite') !
+    const navigate = useNavigate()
     const [imageUpload, setImageUpload] = useState<File | null>(null)
-    let imageUrl = ''
+    const [isLoading, setIsLoading] = useState(false)
 
     const [nome, setNome] = useState('')
     const [descricao, setDescricao] = useState('')
@@ -15,22 +19,20 @@ export default function CreateFilme() {
     const [pais, setPais] = useState('')
     const [anoLancamento, setAnoLancamento] = useState('')
 
-    async function uploadImage(e: FormEvent) {
+    async function handleUploadImage(e: FormEvent) {
+        setIsLoading(true)
         e.preventDefault();
         if (imageUpload == null)
             return
 
         const imageRef = ref(storage, `images/${imageUpload.name}`)
-        const result = uploadBytes(imageRef, imageUpload).then((snapshot) => {
+        uploadBytes(imageRef, imageUpload).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
                 handleCreate(url)
             })
         }).catch(err => {
             return console.log(`Erro: ${err}`)
-        })  
-
-        console.log(result)
-        console.log(imageUrl)
+        })
     }
 
     async function handleCreate(urlImage: string) {
@@ -41,13 +43,24 @@ export default function CreateFilme() {
             diretor: diretor || '',
             pais: pais || '',
             anoLancamento: anoLancamento || '',
-            img: urlImage || ''
+            img: urlImage || '',
+            favorite: favorite
         }
 
         try {
             const createFilme = await FilmeService.create(formData)
             if (createFilme) {
                 alert('Criado')
+                setIsLoading(false)
+
+                setNome('')
+                setDescricao('')
+                setDiretor('')
+                setPais('')
+                setAnoLancamento('')
+                setImageUpload(null)
+
+                navigate('/')
             }
         } catch (error) {
             console.log(error)
@@ -57,9 +70,21 @@ export default function CreateFilme() {
 
     return (
         <div className='formCreate'>
+            {isLoading && (
+                <div className='loading'>
+                    <div className='loadingIcon'>
+                        <FaSpinner />
+                    </div>
+                    <div>
+                        <p>
+                            Carregando
+                        </p>
+                    </div>
+                </div>
+            )}
             <h1>Cadastrar Filme</h1>
             <hr style={{ display: 'flex', justifyContent: 'center', margin: '0 10em' }} />
-            <form className='form' onSubmit={uploadImage}>
+            <form className='form' onSubmit={handleUploadImage}>
                 <div className='field'>
                     <label htmlFor="title">Título: &nbsp; <span>*</span></label>
                     <input
@@ -122,6 +147,6 @@ export default function CreateFilme() {
                     <button type="submit">Cadastrar</button>
                 </div>
             </form>
-        </div>
+        </div >
     )
 }

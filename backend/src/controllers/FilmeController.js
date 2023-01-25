@@ -27,7 +27,7 @@ module.exports = class FilmeController {
       return res.status(400).send({ message: 'Erro ao listar os filmes' })
     }
   }
-
+  
   static async create(req, res) {
     try {
       const {

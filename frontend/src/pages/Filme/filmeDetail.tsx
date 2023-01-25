@@ -1,6 +1,7 @@
 import './css/detailImg.css'
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { FaRegStar, FaSpinner, FaStar } from 'react-icons/fa';
 import FilmeService from '../../service/filmeService';
 import { Link } from 'react-router-dom';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
@@ -12,33 +13,64 @@ export default function FilmeDetail() {
     const [isLoading, setIsLoading] = useState(false);
     const [filme, setFilme] = useState<any>({})
 
+    const [star, setStar] = useState(false)
+    let status = false
+
+    async function handleStart(id: string) {
+        if (!star) {
+            status = true
+        } else {
+            status = false
+        }
+
+        const card = await FilmeService.getById(id)
+
+        await FilmeService.setToggleFavorite(id, card, status)
+
+        setStar(status)
+    }
+
     useEffect(() => {
         async function getFilmes() {
             setIsLoading(true)
 
-            const filmesList = await FilmeService.getById(params.id || '')
+            const filme = await FilmeService.getById(params.id || '')
 
-            setFilme(filmesList)
-
+            setFilme(filme)
+            setStar(filme.favorite)
             setIsLoading(false)
         }
 
         getFilmes();
     }, []);
 
-    function handleEdit(id: string){
+    function handleEdit(id: string) {
         navigate(`/filme/${id}`)
     }
 
-    function handleRemove(){
-        
+    async function handleRemove(id: string) {
+
+        await FilmeService.removeFilme(id)
+
+        navigate('/')
     }
 
     return (
         <>
             {filme ? (
                 <div className='containerDetail'>
-                    {/* Foto */}
+                    {isLoading && (
+                        <div className='loading'>
+                            <div className='loadingIcon'>
+                                <FaSpinner />
+                            </div>
+                            <div>
+                                <p>
+                                    Carregando
+                                </p>  
+                            </div>
+                        </div>
+                    )}
                     <div className='detailImageAndInfo'>
                         <div className='detailImage'>
                             <img src={filme.img} />
@@ -51,23 +83,42 @@ export default function FilmeDetail() {
                         </div>
                     </div>
 
-                    {/* Conteudo */}
                     <div className='detailDescription'>
-                        {/* Ação [Add aos Favoritos, Editar e Remover] */}
                         <div className='iconsDetail'>
                             <div className='iconActions'>
                                 <button className='editDetail' onClick={() => handleEdit(filme._id)}>
                                     <FaPencilAlt />
                                 </button>
-                                <button className='removeDetail' onClick={handleRemove}>
+                                <button className='removeDetail' onClick={() => handleRemove(filme._id)}>
                                     <FaTrashAlt />
                                 </button>
                             </div>
                             <div className='IconStar'>
-
+                                {star ? (
+                                    <FaStar
+                                        style={{
+                                            padding: '0.3em',
+                                            fontSize: '18pt',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            color: '#FF0000',
+                                        }}
+                                        onClick={() => handleStart(filme._id)}
+                                    />
+                                ) : (
+                                    <FaRegStar
+                                        style={{
+                                            padding: '0.3em',
+                                            fontSize: '18pt',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            color: '#FF0000',
+                                        }}
+                                        onClick={() => handleStart(filme._id)}
+                                    />
+                                )}
                             </div>
                         </div>
-                        {/* Titulo, Descrição, país, diretor */}
                         <div className='descriptionContent'>
                             <p>
                                 {filme.descricao}

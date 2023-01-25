@@ -4,18 +4,13 @@
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    margin-bottom: 2em;
 }
 
 .formCreate h1, .formEdit h1 {
     margin: .3em 0;
 }
 
-.form {
-    /* margin: 2em 10em; */
-}
-
-.form div {
+.field, .fieldImage, .btnSubmit {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,6 +38,23 @@
 
 .form span {
     color: #FF0000;
+}
+
+.contentImage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.contentImage img {
+    width: 20vw
+}
+
+.actionCloseImg {
+    margin-left: 1em;
+    font-size: 18pt;
+    color: #b90303;
+    cursor: pointer;
 }
 
 .btn {
@@ -80,4 +92,32 @@
     color: #b90303;
 }
 
+.loading {
+    min-height: 100%;
+    top: 0px; 
+    bottom: 0px; 
+    background-color: #cecece;
+    opacity: .5;
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 
+.loadingIcon {
+    font-size: 22pt;
+    animation: infinite;
+    animation-name: loading;
+    animation-duration: 2s;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
