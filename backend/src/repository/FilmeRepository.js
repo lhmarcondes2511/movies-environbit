@@ -18,13 +18,13 @@ module.exports = class FilmeRepository {
   }
 
   static getById(id) {
-    return Filme.findById(id)
+    return Filme.findById(id).select('nome descricao diretor pais anoLancamento img favorite')
   }
 
-  static editFilmeSave(id, nome, descricao, diretor, pais, anoLancamento, img) {
+  static editFilmeSave(id, nome, descricao, diretor, pais, anoLancamento, img, favorite) {
     return Filme.findOneAndUpdate(
       { _id: id },
-      { nome, descricao, diretor, pais, anoLancamento, img },
+      { nome, descricao, diretor, pais, anoLancamento, img, favorite },
       { returnDocument: 'after'}      
     )
   }

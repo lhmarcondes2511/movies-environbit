@@ -42,20 +42,57 @@
     flex-direction: column;
 }
 
+.btnSearch, .btnOrder:not(.limpar) {
+    border: 0;
+    border: 1px solid #b90303;
+    background-color: #fff;
+    color: #b90303;
+    padding: .6em 1em;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.btnOrder:hover {
+    color: #fff;
+    background-color: #b90303;
+}
+
+.btnSearch {
+    margin: 0 1em;
+    background-color: #b90303;
+    color: #fff;
+}
+
+
+.btnSearch:hover {
+    background-color: #ff0000;
+    color: #fff
+}
+
+.limpar {
+    border: 0;
+    background-color: #fff;
+    color: #b90303;
+    padding: .6em 1em;
+    transition: .5s;
+    cursor: pointer;
+}
+
 .search input[type='text'], 
 .search input[type='text']:focus {
     width: 40%;
     font-size: large;
     border: none;
     border-bottom: 1px solid #b90303;
+    color: #cecece;
     outline: 0;
 }
 
 .ordination {
-    margin-top: 1em;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .ordination span {
@@ -63,25 +100,66 @@
 }
 
 .btnOrdination {
-    margin: 0 .5em;
-    border: 1px solid #b90303;
-    transition: .5s;
-    color: #000;
+    display: flex;
+    justify-content: space-between;
+    margin: .5em;
 }
 
-.btnOrdination:hover {
-    margin: 0 .5em;
-    background-color: #b90303;
-    color: #fff;
-    cursor: pointer;
+.btnOrdination form {
+    margin: 0 .2em
 }
 
 .btnOrdination div {
     padding: .3em;
 }
 
+.active {
+    color: #fff !important;
+    background-color: #b90303 !important;
+}
+
 .listFilms {
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
+}
+
+.searchNotFound {
+    margin-top: 3em
+}
+
+.searchNotFound p {
+    font-size: 16pt;
+}
+
+.searchNotFound span {
+    font-weight: bold;
+    color: #b90303
+}
+
+.searchNotFound button {
+    margin-top: 1em;
+    cursor: pointer;
+}
+
+@media (max-width: 545px) {
+    .button {
+        margin-right: 0;
+    }
+    
+    .search input[type='text'] {
+        width:60%
+    }
+
+    .ordination {
+        flex-direction: column;
+    }
+
+    .btnOrdination {
+        flex-direction: column;
+    }
+
+    .btnOrdination form {
+        margin: .5em 0;
+    }
 }

@@ -1,6 +1,8 @@
 const { default: mongoose } = require('mongoose')
 const mogoose = require('mongoose')
 
+mongoose.set('strictQuery', false);
+
 const filmeSchema = new mogoose.Schema({
     nome: {
         type: String,

@@ -36,7 +36,9 @@ module.exports = class FilmeController {
         diretor,
         pais,
         anoLancamento,
-        img
+        img,
+        favorite,
+        myfavorites
       } = req.body
 
       if (!nome ||
@@ -47,7 +49,21 @@ module.exports = class FilmeController {
         return res.status(400).send({ message: 'Campos obrigatórios não preenchiudos' })
       }
 
-      const createFilme = await FilmeRepository.createFilme(req.body)
+      const form = {
+        nome: nome,
+        descricao: descricao,
+        diretor: diretor,
+        pais: pais,
+        anoLancamento: anoLancamento,
+        img: img,
+        favorite: false
+      }
+
+      if(myfavorites){
+        form.favorite = true
+      }      
+
+      const createFilme = await FilmeRepository.createFilme(form)
 
       return res.status(201).send({
         message: 'Filme criado com sucesso!',
@@ -58,11 +74,12 @@ module.exports = class FilmeController {
           diretor,
           pais,
           anoLancamento,
-          img
+          img,
+          favorite
         }
       })
     } catch (error) {
-      return res.status(400).send({ message: 'Erro ao criar o Filme' })
+      return res.status(400).send({ message: `Erro ao criar o Filme: ${error}` })
     }
   }
 
@@ -96,7 +113,8 @@ module.exports = class FilmeController {
         diretor,
         pais,
         anoLancamento,
-        img
+        img,
+        favorite
       } = req.body
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -116,7 +134,8 @@ module.exports = class FilmeController {
         diretor,
         pais,
         anoLancamento,
-        img
+        img,
+        favorite
       )
 
       return res.status(200).send({

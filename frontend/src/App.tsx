@@ -16,7 +16,8 @@ function App() {
           <Route path='/search' element={<Home />} />
           <Route path='/myfavorite' element={<Favorites />} />
           <Route path='/filme' element={<Filme />} />
-          <Route path='/filmeDetail' element={<FilmeDetail />} />
+          <Route path='/filme/:id' element={<Filme />} />
+          <Route path='/filmeDetail/:id' element={<FilmeDetail />} />
           <Route path='*' element={<PageNotFound />}>
           </Route>
         </Routes>
