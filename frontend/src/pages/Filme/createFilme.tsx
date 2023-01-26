@@ -5,10 +5,12 @@ import { storage } from '../../firebaseConfig'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import FilmeService from '../../service/filmeService';
 import { useNavigate } from 'react-router'
+import { toast } from 'react-toastify'
 
 export default function CreateFilme() {
     const searchParams = new URLSearchParams(document.location.search)
-    let favorite = searchParams.get('favorite') !
+    let favorite = searchParams.get('myfavorite') !
+    console.log(favorite)
     const navigate = useNavigate()
     const [imageUpload, setImageUpload] = useState<File | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -44,13 +46,12 @@ export default function CreateFilme() {
             pais: pais || '',
             anoLancamento: anoLancamento || '',
             img: urlImage || '',
-            favorite: favorite
+            favorite: Boolean(favorite)
         }
 
         try {
             const createFilme = await FilmeService.create(formData)
             if (createFilme) {
-                alert('Criado')
                 setIsLoading(false)
 
                 setNome('')
@@ -61,9 +62,10 @@ export default function CreateFilme() {
                 setImageUpload(null)
 
                 navigate('/')
+                toast.success('Filme criado com sucesso!')
             }
         } catch (error) {
-            console.log(error)
+            toast.error('Erro ao criar um filme. Tente novamente!')
         }
 
     }
@@ -128,6 +130,7 @@ export default function CreateFilme() {
                         name="anoLancamento"
                         placeholder="Ano de Lançamento (Ex: 1995)"
                         onChange={(e) => setAnoLancamento(e.target.value)}
+                        pattern='[0-9]{4}'
                         required={true} />
                 </div>
                 <div className='fieldImage'>

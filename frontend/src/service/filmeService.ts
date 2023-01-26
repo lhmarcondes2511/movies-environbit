@@ -7,7 +7,7 @@ type FormProps = {
   pais: string,
   anoLancamento: string,
   img: string,
-  favorite: string
+  favorite: boolean
 }
 
 class FilmeService {
@@ -39,7 +39,7 @@ class FilmeService {
       pais: form.pais,
       anoLancamento: form.anoLancamento,
       img: form.img,
-      favorite: form.favorite
+      favorite: Boolean(form.favorite)
     })
     return result.data.data
   }
@@ -53,6 +53,7 @@ class FilmeService {
       img: form.img,
       favorite: status
     })
+    return result
   }
 
   static async getById(id: string) {

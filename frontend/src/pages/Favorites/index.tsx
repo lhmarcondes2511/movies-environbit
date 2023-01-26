@@ -31,7 +31,7 @@ export default function Favorites() {
 
             setIsLoading(false)
         }
-        
+
         getFilmes();
     }, []);
 
@@ -45,7 +45,7 @@ export default function Favorites() {
                 </p>
             </div>
             <div className="button">
-                <Link to="/filme?favorite=true" style={{ textDecoration: 'none' }}>
+                <Link to="/filme?myfavorite=true" style={{ textDecoration: 'none' }}>
                     <FaPlus style={{ marginRight: '5px' }} /> Filmes Favoritos
                 </Link>
             </div>
@@ -89,7 +89,12 @@ export default function Favorites() {
                         <div className='searchNotFound'>
                             {!name ? (
                                 <>
-                                    <p>Nenhum filme como favorito. <br /> <Link to='/'>Clique aqui</Link> para ir na página principal adicionar </p>
+                                    <p>
+                                        Nenhum filme como favorito. <br />
+                                        <Link to='/' style={{ textDecoration: 'none', color: '#b90303' }}>
+                                            Clique aqui
+                                        </Link> para ir na página principal adicionar
+                                    </p>
                                 </>
                             ) : (
                                 <>

@@ -5,6 +5,9 @@ import { FaRegStar, FaSpinner, FaStar } from 'react-icons/fa';
 import FilmeService from '../../service/filmeService';
 import { Link } from 'react-router-dom';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
+import { storage } from '../../firebaseConfig';
+import { deleteObject, ref } from 'firebase/storage';
+import { toast } from 'react-toastify';
 
 export default function FilmeDetail() {
     const navigate = useNavigate()
@@ -49,10 +52,28 @@ export default function FilmeDetail() {
     }
 
     async function handleRemove(id: string) {
+        try{
+            handleCloseImg()
+    
+            await FilmeService.removeFilme(id)
+    
+            navigate('/')
+            toast.success('Filme Removido com sucesso!')
+        }catch(error){
+            toast.error('Ocorreu um erro ao remover. Tente novamente!')
+            console.log(error)
+        }
+    }
 
-        await FilmeService.removeFilme(id)
+    function handleCloseImg() {
+        const url = filme.img.split('%2F')[1].split('?alt')[0].replaceAll('%20', ' ')
+        const desertRef = ref(storage, `images/${url}`);
 
-        navigate('/')
+        deleteObject(desertRef).then(() => {
+            console.log('imagem deletada com sucesso!')
+        }).catch((error) => {
+            console.log(`Erro: ${error}`)
+        });
     }
 
     return (

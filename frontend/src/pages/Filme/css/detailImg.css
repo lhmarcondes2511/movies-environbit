@@ -99,6 +99,35 @@
     text-align: justify;
 }
 
+.loading {
+    min-height: 100%;
+    left: 0;
+    background-color: #cecece;
+    opacity: .5;
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loadingIcon {
+    font-size: 22pt;
+    animation: infinite;
+    animation-name: loading;
+    animation-duration: 2s;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 545px) {
     .containerDetail {
         flex-direction: column;

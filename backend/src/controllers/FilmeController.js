@@ -37,8 +37,7 @@ module.exports = class FilmeController {
         pais,
         anoLancamento,
         img,
-        favorite,
-        myfavorites
+        favorite
       } = req.body
 
       if (!nome ||
@@ -56,12 +55,8 @@ module.exports = class FilmeController {
         pais: pais,
         anoLancamento: anoLancamento,
         img: img,
-        favorite: false
+        favorite: favorite ? favorite : false
       }
-
-      if(myfavorites){
-        form.favorite = true
-      }      
 
       const createFilme = await FilmeRepository.createFilme(form)
 

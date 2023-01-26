@@ -7,6 +7,7 @@ import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage
 import { Link } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
 import { AiOutlineCloseCircle } from 'react-icons/ai'
+import { toast } from 'react-toastify';
 
 export default function EditFilme() {
     const navigate = useNavigate()
@@ -56,7 +57,7 @@ export default function EditFilme() {
             pais: pais || '',
             anoLancamento: anoLancamento || '',
             img: urlImage || '',
-            favorite: favorite
+            favorite: Boolean(favorite)
         }
 
         const id = filme._id;
@@ -64,7 +65,6 @@ export default function EditFilme() {
         try {
             const createFilme = await FilmeService.edit(id, formData)
             if (createFilme) {
-                alert('Ediatdo')
                 setIsLoadingEdit(false)
 
                 setNome('')
@@ -75,23 +75,24 @@ export default function EditFilme() {
                 setImageUpload(null)
 
                 navigate('/')
+                toast.success('Filme editado com sucesso!')
             }
         } catch (error) {
+            toast.error('Erro ao editar o filme. Tente novamente!')
             console.log(error)
         }
 
     }
 
     function handleCloseImg() {
-
         const url = urlImgFirebase.split('%2F')[1].split('?alt')[0].replaceAll('%20', ' ')
         const desertRef = ref(storage, `images/${url}`);
 
-        // Delete the file
         deleteObject(desertRef).then(() => {
             setUrlImg('')
             setImgView(false)
         }).catch((error) => {
+            toast.error('Ocorreu um erro. Tente novamente!')
             console.log(`Erro: ${error}`)
         });
     }
