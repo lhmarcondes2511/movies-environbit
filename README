@@ -1,0 +1,20 @@
+Olá, me chamo Lucas Henrique e estou aqui para apresnetar o projeto que criei do zero com ReactJs (Front End), NodeJs (Back End) e Banco de dados (Mongoose).
+
+O projeto é sobre um site de filmes, onde podemos adicionar um filme, tanto na Home, quanto na página Meus Favoritos, a diferença é que na Home, você colocará o filme em uma lista geral do site, enquanto nos Meus Favoritos, adicionará no filme a etiqueta de "favorito", separando os filmes que você mais gosta.
+
+
+- Páginas
+
+HOME - Encontra-se a listagem de todos os filmes cadastrados, sendo favoritos ou não. Nessa listagem vemos vários cards contendo (Imagem, Nome, Ano, Favorito):
+    + Se clicar na imagem você será redirecionado para a página de detalhes do filme que escolheu, vendo mais informações como (País, Diretor, Título do filme completo, Descrição).
+    + Se clicar no icone de favoritos, você irá adicionar o filme que deseja para a sua lista de favoritos, onde se encontra na página "Meus Favoritos".
+    
+Filme - Aqui eu separei em 2 páginas, o detalhes do filme e a página de Criar e Editar. Como dito acima, dentro de Detalhes do Filme, encontraremos mais informações, além de ter as opções de (Editar, Remover e Adicionar aos faovritos).
+
+Meus Favoritos - Visto igual a página Home, tendo a diferença em listar somente os filmes que foram classificados como "favoritos".
+
+Podemos verificar que há funcionalidade de busca de filmes e ordenação para a listagem de Filmes e também nos Favoritos, deixando mais otimizado para o cliente.
+
+Muito obrigado pela a atenção.
+
+Lucas Marcondes
