@@ -6,10 +6,11 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import FilmeService from '../../service/filmeService';
 import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
+import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 export default function CreateFilme() {
     const searchParams = new URLSearchParams(document.location.search)
-    let favorite = searchParams.get('myfavorite') !
+    let favorite = searchParams.get('myfavorite')!
     console.log(favorite)
     const navigate = useNavigate()
     const [imageUpload, setImageUpload] = useState<File | null>(null)
@@ -20,6 +21,9 @@ export default function CreateFilme() {
     const [diretor, setDiretor] = useState('')
     const [pais, setPais] = useState('')
     const [anoLancamento, setAnoLancamento] = useState('')
+
+    const [urlImg, setUrlImg] = useState('')
+    const [ImgView, setImgView] = useState(false)
 
     async function handleUploadImage(e: FormEvent) {
         setIsLoading(true)
@@ -68,6 +72,11 @@ export default function CreateFilme() {
             toast.error('Erro ao criar um filme. Tente novamente!')
         }
 
+    }
+
+    function handleCloseImg() {
+        setUrlImg('')
+        setImgView(false)
     }
 
     return (
@@ -133,7 +142,7 @@ export default function CreateFilme() {
                         pattern='[0-9]{4}'
                         required={true} />
                 </div>
-                <div className='fieldImage'>
+                {/* <div className='fieldImage'>
                     <label htmlFor="img">Imagem: <span>*</span></label>
                     <input
                         type="file"
@@ -145,7 +154,34 @@ export default function CreateFilme() {
                             setImageUpload(e.target.files[0])
                         }}
                         required={true} />
-                </div>
+                </div> */}
+                {ImgView ? (
+                    <div className='fieldImage'>
+                        <label htmlFor="img">Imagem: <span>*</span></label>
+                        <p style={{ fontSize: '10pt', display: 'flex', marginBottom: '1em' }}>OBS: Ao clicar em remover a imagem, ela será removida permanente.</p>
+                        <div className='contentImage'>
+                            <img src={(!urlImg && imageUpload) ? URL.createObjectURL(imageUpload) : urlImg} />
+                            <div className='actionCloseImg' onClick={handleCloseImg}>
+                                <AiOutlineCloseCircle />
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className='fieldImage'>
+                        <label htmlFor="img">Imagem: <span>*</span></label>
+                        <input
+                            type="file"
+                            name="img"
+                            placeholder="Imagem do Filme"
+                            accept='image/*'
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                if (!e.target.files) return
+                                setImageUpload(e.target.files[0])
+                                setImgView(true)
+                            }}
+                            required={true} />
+                    </div>
+                )}
                 <div className='btnSubmit'>
                     <button type="submit">Cadastrar</button>
                 </div>
