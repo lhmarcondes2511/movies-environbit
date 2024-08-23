@@ -1,4 +1,4 @@
-Olá, me chamo Lucas Henrique e estou aqui para apresnetar o projeto que criei do zero com ReactJs (Front End), NodeJs (Back End) e Banco de dados (Mongoose).
+Olá, me chamo Lucas Henrique e estou aqui para apresentar o projeto que criei do zero com ReactJs (Front End), NodeJs (Back End) e Banco de dados (MongoDB).
 
 O projeto é sobre um site de filmes, onde podemos adicionar um filme, tanto na Home, quanto na página Meus Favoritos, a diferença é que na Home, você colocará o filme em uma lista geral do site, enquanto nos Meus Favoritos, adicionará no filme a etiqueta de "favorito", separando os filmes que você mais gosta.
 
